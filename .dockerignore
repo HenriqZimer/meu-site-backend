@@ -1,0 +1,4 @@
+/data
+Dockerfile
+node_modules
+dist
