@@ -8,6 +8,11 @@ spec:
         - sleep
       args:
         - infinity
+      env:
+        - name: NPM_CONFIG_CACHE
+          value: /tmp/.npm
+        - name: NODE_OPTIONS
+          value: '--max-old-space-size=1536'
       # resources:
       #   requests:
       #     memory: '1Gi'
