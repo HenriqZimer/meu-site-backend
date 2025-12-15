@@ -16,7 +16,7 @@ spec:
       #     memory: '2Gi'
       #     cpu: '2000m'
     - name: sonar-scanner-cli
-      image: sonarsource/sonar-scanner-cli:5.0.1
+      image: sonarsource/sonar-scanner-cli:12.0
       command:
         - sleep
       args:
