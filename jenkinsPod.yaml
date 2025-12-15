@@ -86,11 +86,8 @@ spec:
           mountPath: /artifacts
     - name: mongodb
       image: mongo:7
-      command:
-        - mongod
       args:
         - --bind_ip_all
-        - --auth
       env:
         - name: MONGO_INITDB_ROOT_USERNAME
           value: admin
