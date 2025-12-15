@@ -10,11 +10,16 @@ spec:
         - infinity
       resources:
         requests:
-          memory: '216Mi'
-          cpu: '250m'
+          memory: '1Gi'
+          cpu: '1000m'
         limits:
-          memory: '512Mi'
-          cpu: '500m'
+          memory: '2Gi'
+          cpu: '2000m'
+      # env:
+      #   - name: NPM_CONFIG_CACHE
+      #     value: /tmp/.npm
+      #   - name: NODE_OPTIONS
+      #     value: '--max-old-space-size=1536'
     # - name: sonar-scanner-cli
     #   image: sonarsource/sonar-scanner-cli:5.0.1
     #   command:
