@@ -113,7 +113,7 @@ export class ProjectsService {
 
     const byCategory = projects.reduce(
       (acc, project) => {
-        acc[project.category] = (acc[project.category] || 0) + 1;
+        acc[project.category] = (acc[project.category] ?? 0) + 1;
         return acc;
       },
       {} as Record<string, number>,
