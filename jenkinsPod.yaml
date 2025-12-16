@@ -18,8 +18,7 @@ spec:
           mountPath: /tmp/.npm
           subPath: backend-npm-cache
         - name: jenkins-artifacts
-          mountPath: /app/node_modules
-          subPath: backend-node_modules
+          mountPath: /artifacts
       # resources:
       #   requests:
       #     memory: '1Gi'

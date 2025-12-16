@@ -92,7 +92,7 @@ export class CertificationsService {
 
     const byIssuer = certifications.reduce(
       (acc, cert) => {
-        acc[cert.issuer] = (acc[cert.issuer] || 0) + 1;
+        acc[cert.issuer] = (acc[cert.issuer] ?? 0) + 1;
         return acc;
       },
       {} as Record<string, number>,

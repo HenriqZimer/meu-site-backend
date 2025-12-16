@@ -77,7 +77,7 @@ export class AuthService {
       const payload = this.jwtService.verify(token);
       const user = await this.userModel.findById(payload.sub);
 
-      if (!user || !user.active) {
+      if (!user?.active) {
         throw new UnauthorizedException();
       }
 
