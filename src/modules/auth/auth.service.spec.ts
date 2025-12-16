@@ -136,9 +136,9 @@ describe('AuthService', () => {
     it('should throw UnauthorizedException when user not found', async () => {
       mockUserModel.findOne.mockResolvedValue(null);
 
-      await expect(service.login({ username: 'nonexistent', password: 'password' })).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        service.login({ username: 'nonexistent', password: 'password' }),
+      ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should throw UnauthorizedException on invalid password', async () => {
@@ -159,9 +159,9 @@ describe('AuthService', () => {
     });
 
     it('should throw UnauthorizedException when username is not a string', async () => {
-      await expect(service.login({ username: { $ne: null }, password: 'password' })).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        service.login({ username: { $ne: null }, password: 'password' }),
+      ).rejects.toThrow(UnauthorizedException);
     });
   });
 
