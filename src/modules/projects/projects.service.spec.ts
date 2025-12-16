@@ -45,12 +45,13 @@ describe('ProjectsService', () => {
       const sortMock = vi.fn(() => ({ exec: execMock }));
       mockProjectModel.find.mockReturnValue({ sort: sortMock });
 
-      //   const result = await service.findAll('web');
+      const result = await service.findAll('web');
 
       expect(mockProjectModel.find).toHaveBeenCalledWith({
         active: true,
         category: { $eq: 'web' },
       });
+      expect(result).toEqual(mockProjects);
     });
 
     it('should filter by featured', async () => {
@@ -60,12 +61,13 @@ describe('ProjectsService', () => {
       const sortMock = vi.fn(() => ({ exec: execMock }));
       mockProjectModel.find.mockReturnValue({ sort: sortMock });
 
-      //   const result = await service.findAll(undefined, true);
+      const result = await service.findAll(undefined, true);
 
       expect(mockProjectModel.find).toHaveBeenCalledWith({
         active: true,
         featured: true,
       });
+      expect(result).toEqual(mockProjects);
     });
   });
 
