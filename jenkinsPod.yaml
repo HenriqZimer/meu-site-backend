@@ -68,13 +68,13 @@ spec:
         - sleep
       args:
         - infinity
-      resources:
-        requests:
-          memory: '500Mi'
-          cpu: '250m'
-        limits:
-          memory: '1Gi'
-          cpu: '500m'
+      # resources:
+      #   requests:
+      #     memory: '500Mi'
+      #     cpu: '250m'
+      #   limits:
+      #     memory: '1Gi'
+      #     cpu: '500m'
       volumeMounts:
         - name: jenkins-artifacts
           mountPath: /artifacts
