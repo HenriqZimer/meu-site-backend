@@ -7,9 +7,8 @@ WORKDIR /app
 # Copia os arquivos de dependências
 COPY package*.json ./
 
-# Instala dependências
-RUN --mount=type=cache,target=/root/.npm \
-  npm ci --prefer-offline --no-audit --progress=false --loglevel=error
+# Instala todas as dependências (incluindo dev) para o build
+RUN npm ci -no-audit
 
 # Copia o código fonte
 COPY . .
@@ -20,6 +19,9 @@ ENV MONGODB_URI=${MONGODB_URI}
 
 # Gera a pasta dist
 RUN npm run build:prod
+
+# Remove devDependencies após o build para reduzir tamanho
+RUN npm prune --production
 
 # --- Stage 2: Production ---
 FROM node:lts-trixie-slim
