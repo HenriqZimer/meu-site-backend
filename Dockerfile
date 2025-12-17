@@ -1,47 +1,40 @@
 # --- Stage 1: Builder ---
 FROM node:lts-trixie-slim AS builder
 
-# Seleciona o diretório de trabalho
-WORKDIR /app
+# Cria o usuário 'node'
+USER node
+
+# Define o diretório de trabalho
+WORKDIR /usr/src/app
 
 # Copia os arquivos de dependências
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
 
-# Instala todas as dependências (incluindo dev) para o build
-RUN npm ci -no-audit
+# Instala as dependências
+RUN npm ci --no-audit
 
-# Copia o código fonte
-COPY . .
+COPY --chown=node:node . .
 
 # Define a URL do MongoDB para o build
 ARG MONGODB_URI=
 ENV MONGODB_URI=${MONGODB_URI}
 
-# Gera a pasta dist
+# Executa o comando de build que cria o bundle de produção
 RUN npm run build:prod
 
-# Remove devDependencies após o build para reduzir tamanho
+# Limpa o cache do npm para reduzir o tamanho da imagem
 RUN npm prune --production
 
 # --- Stage 2: Production ---
-FROM node:lts-trixie-slim
+FROM node:lts-trixie-slim AS production
 
-# Seleciona o diretório de trabalho
-WORKDIR /app
+# Copia os arquivos empacotados da etapa de build para a imagem de produção
+COPY --chown=node:node --from=builder /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=builder /usr/src/app/dist ./dist
 
-# Copia node_modules já limpo (apenas prod)
-COPY --from=builder /app/node_modules ./node_modules
-# Copia o código compilado
-COPY --from=builder /app/dist ./dist
-# Copia package.json (útil para alguns frameworks lerem versão/scripts)
-COPY --from=builder /app/package.json ./
-
-# Expõe a porta
-EXPOSE 5000
-
-# Healthcheck ajustado
+# Healthcheck adicionado para verificar se a API está respondendo
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
   CMD node -e "try { require('http').get('http://localhost:5000/api', (r) => process.exit(r.statusCode === 200 || r.statusCode === 404 ? 0 : 1)) } catch (e) { process.exit(1) }"
 
-# Inicia a aplicação
-CMD ["node", "dist/main"]
+# Start the server using the production build
+CMD [ "node", "dist/main.js" ]
