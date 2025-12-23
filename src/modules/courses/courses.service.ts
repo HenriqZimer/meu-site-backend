@@ -12,14 +12,18 @@ export class CoursesService {
     const filter: any = { active: true };
 
     if (year) {
-      filter.year = { $eq: year };
+      // Filter by year from date field
+      filter.date = {
+        $gte: new Date(`${year}-01-01`),
+        $lt: new Date(`${parseInt(year) + 1}-01-01`),
+      };
     }
 
-    return this.courseModel.find(filter).sort({ year: -1, order: 1, name: 1 }).exec();
+    return this.courseModel.find(filter).sort({ date: -1, name: 1 }).exec();
   }
 
   async findAllForAdmin(): Promise<Course[]> {
-    return this.courseModel.find().sort({ year: -1, order: 1, name: 1 }).exec();
+    return this.courseModel.find().sort({ date: -1, name: 1 }).exec();
   }
 
   async findOne(id: string): Promise<Course> {
@@ -31,7 +35,12 @@ export class CoursesService {
   }
 
   async getYears(): Promise<string[]> {
-    const years = await this.courseModel.distinct('year').exec();
+    const courses = await this.courseModel.find().select('date').exec();
+    const years = [
+      ...new Set(
+        courses.filter((c) => c.date).map((c) => new Date(c.date).getFullYear().toString()),
+      ),
+    ];
     return years.sort().reverse();
   }
 
@@ -42,7 +51,16 @@ export class CoursesService {
 
   async update(id: string, updateCourseDto: UpdateCourseDto): Promise<Course> {
     // Only allow whitelisted fields from UpdateCourseDto for updating
-    const allowedFields = ['name', 'year', 'order', 'active']; // Update to allowed UpdateCourseDto fields
+    const allowedFields = [
+      'name',
+      'platform',
+      'instructor',
+      'duration',
+      'image',
+      'link',
+      'date',
+      'active',
+    ];
     const safeUpdate: any = {};
     for (const field of allowedFields) {
       if (

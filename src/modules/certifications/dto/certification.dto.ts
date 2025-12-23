@@ -18,18 +18,13 @@ export class CreateCertificationDto {
   @IsString()
   link: string;
 
-  @ApiProperty({ example: 'Out 2025' })
+  @ApiProperty({ example: '2025-10-15' })
   @IsString()
   date: string;
 
   @ApiProperty({ example: 8 })
   @IsNumber()
   skills: number;
-
-  @ApiProperty({ example: 0, required: false })
-  @IsOptional()
-  @IsNumber()
-  order?: number;
 
   @ApiProperty({ example: true, required: false })
   @IsOptional()
@@ -67,11 +62,6 @@ export class UpdateCertificationDto {
   @IsOptional()
   @IsNumber()
   skills?: number;
-
-  @ApiProperty({ required: false })
-  @IsOptional()
-  @IsNumber()
-  order?: number;
 
   @ApiProperty({ required: false })
   @IsOptional()

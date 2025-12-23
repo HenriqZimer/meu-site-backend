@@ -15,12 +15,6 @@ export class Skill extends Document {
   @Prop({ required: true })
   color: string;
 
-  @Prop({ required: true })
-  bgColor: string;
-
-  @Prop({ default: 0 })
-  order: number;
-
   @Prop({ default: true })
   active: boolean;
 }

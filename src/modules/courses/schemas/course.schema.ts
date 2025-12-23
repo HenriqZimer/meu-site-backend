@@ -21,11 +21,8 @@ export class Course extends Document {
   @Prop()
   link: string;
 
-  @Prop()
-  year: string;
-
-  @Prop({ default: 0 })
-  order: number;
+  @Prop({ type: Date })
+  date: Date;
 
   @Prop({ default: true })
   active: boolean;

@@ -18,15 +18,6 @@ export class CreateSkillDto {
   @IsString()
   color: string;
 
-  @ApiProperty({ example: '#e3f2fd' })
-  @IsString()
-  bgColor: string;
-
-  @ApiProperty({ example: 0, required: false })
-  @IsOptional()
-  @IsNumber()
-  order?: number;
-
   @ApiProperty({ example: true, required: false })
   @IsOptional()
   @IsBoolean()
@@ -53,11 +44,6 @@ export class UpdateSkillDto {
   @IsOptional()
   @IsString()
   color?: string;
-
-  @ApiProperty({ required: false })
-  @IsOptional()
-  @IsString()
-  bgColor?: string;
 
   @ApiProperty({ required: false })
   @IsOptional()

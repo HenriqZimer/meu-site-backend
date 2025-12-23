@@ -1,4 +1,4 @@
-import { IsString, IsBoolean, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsBoolean, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCourseDto {
@@ -10,9 +10,10 @@ export class CreateCourseDto {
   @IsString()
   platform: string;
 
-  @ApiProperty({ example: 'Jeferson Fernando' })
+  @ApiProperty({ example: 'Jeferson Fernando', required: false })
+  @IsOptional()
   @IsString()
-  instructor: string;
+  instructor?: string;
 
   @ApiProperty({ example: '30h', required: false })
   @IsOptional()
@@ -29,15 +30,10 @@ export class CreateCourseDto {
   @IsString()
   link?: string;
 
-  @ApiProperty({ example: '2025', required: false })
+  @ApiProperty({ example: '2025-12', required: false })
   @IsOptional()
   @IsString()
-  year?: string;
-
-  @ApiProperty({ example: 0, required: false })
-  @IsOptional()
-  @IsNumber()
-  order?: number;
+  date?: string;
 
   @ApiProperty({ example: true, required: false })
   @IsOptional()
@@ -79,12 +75,7 @@ export class UpdateCourseDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
-  year?: string;
-
-  @ApiProperty({ required: false })
-  @IsOptional()
-  @IsNumber()
-  order?: number;
+  date?: string;
 
   @ApiProperty({ required: false })
   @IsOptional()

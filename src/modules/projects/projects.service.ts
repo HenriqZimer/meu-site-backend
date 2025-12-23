@@ -23,11 +23,11 @@ export class ProjectsService {
       filter.featured = featured;
     }
 
-    return this.projectModel.find(filter).sort({ order: 1, createdAt: -1 }).exec();
+    return this.projectModel.find(filter).sort({ projectDate: -1, createdAt: -1 }).exec();
   }
 
   async findAllForAdmin(): Promise<Project[]> {
-    return this.projectModel.find().sort({ order: 1, createdAt: -1 }).exec();
+    return this.projectModel.find().sort({ projectDate: -1, createdAt: -1 }).exec();
   }
 
   async findOne(id: string): Promise<Project> {
@@ -68,7 +68,17 @@ export class ProjectsService {
 
   async update(id: string, updateProjectDto: UpdateProjectDto): Promise<Project> {
     // Whitelist of allowed update fields -- update as appropriate
-    const allowedFields = ['title', 'description', 'category', 'featured', 'order', 'active']; // Add all valid fields from UpdateProjectDto
+    const allowedFields = [
+      'title',
+      'description',
+      'image',
+      'category',
+      'technologies',
+      'demoUrl',
+      'githubUrl',
+      'order',
+      'active',
+    ];
     const sanitizedUpdate: any = {};
 
     for (const key of Object.keys(updateProjectDto)) {
@@ -78,14 +88,16 @@ export class ProjectsService {
       }
       if (allowedFields.includes(key)) {
         const value = updateProjectDto[key];
-        // Only allow primitive values, not objects or arrays
-        if (this.isSafePrimitive(value)) {
-          sanitizedUpdate[key] = value;
+        // Special handling for technologies array
+        if (key === 'technologies' && Array.isArray(value)) {
+          // Validate that all elements are strings
+          if (value.every((item) => typeof item === 'string')) {
+            sanitizedUpdate[key] = value;
+          }
         }
-        // Block any object/array or suspicious value entirely, including nested $ operators
-        else if (!this.isSafePrimitive(value) && !this.containsMongoOperator(value)) {
-          // skip values that are objects or arrays
-          continue;
+        // Only allow primitive values for other fields
+        else if (this.isSafePrimitive(value)) {
+          sanitizedUpdate[key] = value;
         }
       }
     }
