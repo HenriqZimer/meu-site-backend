@@ -154,7 +154,7 @@ describe('ProjectsService', () => {
       expect(mockProjectModel.findByIdAndUpdate).toHaveBeenCalledWith(
         '1',
         { technologies: ['Vue', 'Node.js'] },
-        { new: true }
+        { new: true },
       );
     });
 
@@ -171,7 +171,7 @@ describe('ProjectsService', () => {
       expect(mockProjectModel.findByIdAndUpdate).toHaveBeenCalledWith(
         '1',
         { title: 'Updated' },
-        { new: true }
+        { new: true },
       );
     });
   });
@@ -231,7 +231,9 @@ describe('ProjectsService', () => {
     });
 
     it('should filter by both category and featured', async () => {
-      const mockProjects = [{ _id: '1', title: 'Project 1', category: 'web', featured: true, active: true }];
+      const mockProjects = [
+        { _id: '1', title: 'Project 1', category: 'web', featured: true, active: true },
+      ];
 
       const execMock = vi.fn().mockResolvedValue(mockProjects);
       const sortMock = vi.fn(() => ({ exec: execMock }));

@@ -119,4 +119,5 @@ describe('CertificationsController', () => {
       expect(result).toEqual(mockCertification);
       expect(service.remove).toHaveBeenCalledWith('507f1f77bcf86cd799439011');
     });
-  });});
+  });
+});

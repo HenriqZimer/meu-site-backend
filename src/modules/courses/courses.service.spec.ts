@@ -50,9 +50,7 @@ describe('CoursesService', () => {
     });
 
     it('should filter courses by year', async () => {
-      const mockCourses = [
-        { _id: '1', name: 'Course 2024', date: '2024-06', active: true },
-      ];
+      const mockCourses = [{ _id: '1', name: 'Course 2024', date: '2024-06', active: true }];
 
       const mockExec = vi.fn().mockResolvedValue(mockCourses);
       const mockSort = vi.fn(() => ({ exec: mockExec }));
@@ -111,7 +109,9 @@ describe('CoursesService', () => {
       mockCourseModel.findById.mockReturnValue({ exec: mockExec });
 
       await expect(service.findOne('invalid-id')).rejects.toThrow(NotFoundException);
-      await expect(service.findOne('invalid-id')).rejects.toThrow('Course with ID invalid-id not found');
+      await expect(service.findOne('invalid-id')).rejects.toThrow(
+        'Course with ID invalid-id not found',
+      );
     });
   });
 
@@ -189,7 +189,9 @@ describe('CoursesService', () => {
       const mockExec = vi.fn().mockResolvedValue(null);
       mockCourseModel.findByIdAndUpdate.mockReturnValue({ exec: mockExec });
 
-      await expect(service.update('invalid-id', { name: 'Test' })).rejects.toThrow(NotFoundException);
+      await expect(service.update('invalid-id', { name: 'Test' })).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('should filter out non-allowed fields', async () => {
@@ -226,7 +228,9 @@ describe('CoursesService', () => {
       mockCourseModel.findByIdAndDelete.mockReturnValue({ exec: mockExec });
 
       await expect(service.remove('invalid-id')).rejects.toThrow(NotFoundException);
-      await expect(service.remove('invalid-id')).rejects.toThrow('Course with ID invalid-id not found');
+      await expect(service.remove('invalid-id')).rejects.toThrow(
+        'Course with ID invalid-id not found',
+      );
     });
   });
 });

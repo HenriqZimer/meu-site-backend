@@ -81,7 +81,9 @@ describe('SkillsService', () => {
       mockSkillModel.findById.mockReturnValue({ exec: mockExec });
 
       await expect(service.findOne('invalid-id')).rejects.toThrow(NotFoundException);
-      await expect(service.findOne('invalid-id')).rejects.toThrow('Skill with ID invalid-id not found');
+      await expect(service.findOne('invalid-id')).rejects.toThrow(
+        'Skill with ID invalid-id not found',
+      );
     });
   });
 
@@ -141,7 +143,7 @@ describe('SkillsService', () => {
       expect(mockSkillModel.findByIdAndUpdate).toHaveBeenCalledWith(
         '1',
         { $set: updateDto },
-        { new: true }
+        { new: true },
       );
     });
 
@@ -149,7 +151,9 @@ describe('SkillsService', () => {
       const mockExec = vi.fn().mockResolvedValue(null);
       mockSkillModel.findByIdAndUpdate.mockReturnValue({ exec: mockExec });
 
-      await expect(service.update('invalid-id', { name: 'Test' })).rejects.toThrow(NotFoundException);
+      await expect(service.update('invalid-id', { name: 'Test' })).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('should filter out non-allowed fields', async () => {
@@ -167,7 +171,7 @@ describe('SkillsService', () => {
       expect(mockSkillModel.findByIdAndUpdate).toHaveBeenCalledWith(
         '1',
         { $set: { name: 'Docker' } },
-        { new: true }
+        { new: true },
       );
     });
   });
@@ -188,7 +192,9 @@ describe('SkillsService', () => {
       mockSkillModel.findByIdAndDelete.mockReturnValue({ exec: mockExec });
 
       await expect(service.remove('invalid-id')).rejects.toThrow(NotFoundException);
-      await expect(service.remove('invalid-id')).rejects.toThrow('Skill with ID invalid-id not found');
+      await expect(service.remove('invalid-id')).rejects.toThrow(
+        'Skill with ID invalid-id not found',
+      );
     });
   });
 });

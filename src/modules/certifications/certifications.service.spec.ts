@@ -142,7 +142,7 @@ describe('CertificationsService', () => {
       expect(mockCertificationModel.findByIdAndUpdate).toHaveBeenCalledWith(
         '1',
         { name: 'Updated' },
-        { new: true }
+        { new: true },
       );
     });
   });
@@ -168,9 +168,7 @@ describe('CertificationsService', () => {
 
   describe('findByIssuer', () => {
     it('should return certifications filtered by issuer', async () => {
-      const mockCertifications = [
-        { _id: '1', name: 'AWS Cert', issuer: 'AWS', active: true },
-      ];
+      const mockCertifications = [{ _id: '1', name: 'AWS Cert', issuer: 'AWS', active: true }];
 
       const execMock = vi.fn().mockResolvedValue(mockCertifications);
       const sortMock = vi.fn(() => ({ exec: execMock }));
@@ -179,7 +177,10 @@ describe('CertificationsService', () => {
       const result = await service.findByIssuer('AWS');
 
       expect(result).toEqual(mockCertifications);
-      expect(mockCertificationModel.find).toHaveBeenCalledWith({ issuer: { $eq: 'AWS' }, active: true });
+      expect(mockCertificationModel.find).toHaveBeenCalledWith({
+        issuer: { $eq: 'AWS' },
+        active: true,
+      });
     });
   });
 
