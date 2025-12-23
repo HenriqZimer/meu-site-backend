@@ -206,7 +206,7 @@ describe('CoursesService', () => {
 
       await service.update('1', updateDto);
 
-      const [[update]] = mockCourseModel.findByIdAndUpdate.mock.calls;
+      const [, update] = mockCourseModel.findByIdAndUpdate.mock.calls[0];
       expect(update.$set).toEqual({ name: 'Test Course' });
       expect(update.$set.notAllowedField).toBeUndefined();
     });

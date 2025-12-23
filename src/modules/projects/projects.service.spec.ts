@@ -249,4 +249,125 @@ describe('ProjectsService', () => {
       expect(result).toEqual(mockProjects);
     });
   });
+
+  describe('update - edge cases', () => {
+    it('should handle null values in update fields', async () => {
+      const updateDto = { description: null };
+      const updatedProject = { _id: '1', description: null };
+
+      const execMock = vi.fn().mockResolvedValue(updatedProject);
+      mockProjectModel.findByIdAndUpdate.mockReturnValue({ exec: execMock });
+
+      const result = await service.update('1', updateDto as any);
+
+      expect(result).toEqual(updatedProject);
+      expect(mockProjectModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        '1',
+        { description: null },
+        { new: true },
+      );
+    });
+
+    it('should reject nested objects in update', async () => {
+      const updateDto = { title: 'Test', metadata: { nested: 'value' } };
+      const updatedProject = { _id: '1', title: 'Test' };
+
+      const execMock = vi.fn().mockResolvedValue(updatedProject);
+      mockProjectModel.findByIdAndUpdate.mockReturnValue({ exec: execMock });
+
+      const result = await service.update('1', updateDto as any);
+
+      // metadata should be filtered out as it's a nested object
+      expect(mockProjectModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        '1',
+        { title: 'Test' },
+        { new: true },
+      );
+    });
+
+    it('should reject technologies array with non-string values', async () => {
+      const updateDto = { technologies: ['Vue', 123, 'Node'] };
+      const updatedProject = { _id: '1' };
+
+      const execMock = vi.fn().mockResolvedValue(updatedProject);
+      mockProjectModel.findByIdAndUpdate.mockReturnValue({ exec: execMock });
+
+      const result = await service.update('1', updateDto as any);
+
+      // technologies should be filtered out as it contains non-string values
+      expect(mockProjectModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        '1',
+        {},
+        { new: true },
+      );
+    });
+
+    it('should accept valid technologies array with only strings', async () => {
+      const updateDto = { technologies: ['Vue', 'Node', 'TypeScript'] };
+      const updatedProject = { _id: '1', technologies: ['Vue', 'Node', 'TypeScript'] };
+
+      const execMock = vi.fn().mockResolvedValue(updatedProject);
+      mockProjectModel.findByIdAndUpdate.mockReturnValue({ exec: execMock });
+
+      const result = await service.update('1', updateDto);
+
+      expect(mockProjectModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        '1',
+        { technologies: ['Vue', 'Node', 'TypeScript'] },
+        { new: true },
+      );
+    });
+
+    it('should filter out fields with nested mongo operators', async () => {
+      const updateDto = {
+        title: 'Test',
+        malicious: { $set: { admin: true } },
+      };
+      const updatedProject = { _id: '1', title: 'Test' };
+
+      const execMock = vi.fn().mockResolvedValue(updatedProject);
+      mockProjectModel.findByIdAndUpdate.mockReturnValue({ exec: execMock });
+
+      const result = await service.update('1', updateDto as any);
+
+      // malicious field should be filtered out
+      expect(mockProjectModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        '1',
+        { title: 'Test' },
+        { new: true },
+      );
+    });
+
+    it('should handle number values correctly', async () => {
+      const updateDto = { order: 5 };
+      const updatedProject = { _id: '1', order: 5 };
+
+      const execMock = vi.fn().mockResolvedValue(updatedProject);
+      mockProjectModel.findByIdAndUpdate.mockReturnValue({ exec: execMock });
+
+      const result = await service.update('1', updateDto as any);
+
+      expect(mockProjectModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        '1',
+        { order: 5 },
+        { new: true },
+      );
+    });
+
+    it('should handle boolean values correctly', async () => {
+      const updateDto = { active: false };
+      const updatedProject = { _id: '1', active: false };
+
+      const execMock = vi.fn().mockResolvedValue(updatedProject);
+      mockProjectModel.findByIdAndUpdate.mockReturnValue({ exec: execMock });
+
+      const result = await service.update('1', updateDto as any);
+
+      expect(mockProjectModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        '1',
+        { active: false },
+        { new: true },
+      );
+    });
+  });
 });
