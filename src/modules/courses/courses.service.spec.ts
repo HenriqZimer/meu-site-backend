@@ -10,7 +10,6 @@ describe('CoursesService', () => {
     const mockExec = vi.fn();
     const mockSort = vi.fn(() => ({ exec: mockExec }));
     const mockFind = vi.fn(() => ({ sort: mockSort }));
-    // const mockSelect = vi.fn(() => ({ exec: mockExec }));
 
     const MockModel = vi.fn((data: any) => ({
       ...data,
@@ -23,7 +22,7 @@ describe('CoursesService', () => {
     mockCourseModel.findByIdAndUpdate = vi.fn(() => ({ exec: mockExec }));
     mockCourseModel.findByIdAndDelete = vi.fn(() => ({ exec: mockExec }));
 
-    service = new CoursesService(mockCourseModel as any);
+    service = new CoursesService(mockCourseModel);
   });
 
   describe('findAll', () => {

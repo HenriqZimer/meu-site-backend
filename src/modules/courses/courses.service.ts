@@ -6,7 +6,7 @@ import { CreateCourseDto, UpdateCourseDto } from './dto/course.dto';
 
 @Injectable()
 export class CoursesService {
-  constructor(@InjectModel(Course.name) private courseModel: Model<Course>) {}
+  constructor(@InjectModel(Course.name) private readonly courseModel: Model<Course>) {}
 
   async findAll(year?: string): Promise<Course[]> {
     const filter: any = { active: true };
@@ -64,7 +64,7 @@ export class CoursesService {
     const safeUpdate: any = {};
     for (const field of allowedFields) {
       if (
-        Object.prototype.hasOwnProperty.call(updateCourseDto, field) &&
+        Object.hasOwn(updateCourseDto, field) &&
         typeof (updateCourseDto as any)[field] !== 'undefined'
       ) {
         safeUpdate[field] = (updateCourseDto as any)[field];

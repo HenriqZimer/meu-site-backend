@@ -23,7 +23,7 @@ describe('ContactsService', () => {
     mockContactModel.findByIdAndUpdate = mockFindByIdAndUpdate;
     mockContactModel.findByIdAndDelete = mockFindByIdAndDelete;
 
-    service = new ContactsService(mockContactModel as any);
+    service = new ContactsService(mockContactModel);
   });
 
   describe('create', () => {
