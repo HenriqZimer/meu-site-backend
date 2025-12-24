@@ -1,5 +1,5 @@
 # --- Stage 1: Builder ---
-FROM node:lts-trixie-slim AS builder
+FROM cgr.dev/chainguard/node:latest AS builder
 
 # Cria o usuário 'node'
 USER node
@@ -26,7 +26,7 @@ RUN npm run build:prod
 RUN npm prune --production
 
 # --- Stage 2: Production ---
-FROM node:lts-trixie-slim AS production
+FROM cgr.dev/chainguard/node:latest AS production
 
 # Copia os arquivos empacotados da etapa de build para a imagem de produção
 COPY --chown=node:node --from=builder /usr/src/app/node_modules ./node_modules
