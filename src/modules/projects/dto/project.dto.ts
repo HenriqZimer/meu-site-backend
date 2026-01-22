@@ -1,4 +1,4 @@
-import { IsString, IsBoolean, IsOptional, IsArray, IsNumber } from 'class-validator';
+import { IsString, IsBoolean, IsOptional, IsArray } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProjectDto {
@@ -34,10 +34,10 @@ export class CreateProjectDto {
   @IsString()
   githubUrl?: string;
 
-  @ApiProperty({ example: 0, required: false })
+  @ApiProperty({ example: '2025-12-01', required: false })
   @IsOptional()
-  @IsNumber()
-  order?: number;
+  @IsString()
+  projectDate?: string;
 
   @ApiProperty({ example: true, required: false })
   @IsOptional()
@@ -84,8 +84,8 @@ export class UpdateProjectDto {
 
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumber()
-  order?: number;
+  @IsString()
+  projectDate?: string;
 
   @ApiProperty({ required: false })
   @IsOptional()

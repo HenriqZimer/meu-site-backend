@@ -24,8 +24,8 @@ export class Project extends Document {
   @Prop({ type: String })
   githubUrl: string;
 
-  @Prop({ default: 0, type: Number })
-  order: number;
+  @Prop({ type: Date })
+  projectDate: Date;
 
   @Prop({ default: true, type: Boolean })
   active: boolean;

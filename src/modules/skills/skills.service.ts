@@ -38,7 +38,7 @@ export class SkillsService {
 
   async update(id: string, updateSkillDto: UpdateSkillDto): Promise<Skill> {
     // Only allow updating specific fields
-    const allowedFields = ['name', 'category', 'order', 'active']; // adjust as needed per your DTO/schema
+    const allowedFields = ['name', 'category', 'icon', 'color', 'bgColor', 'order', 'active'];
     const safeUpdate: Partial<UpdateSkillDto> = {};
     for (const key of allowedFields) {
       if (Object.prototype.hasOwnProperty.call(updateSkillDto, key)) {

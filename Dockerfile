@@ -1,44 +1,43 @@
-# Build stage
-FROM node:lts-trixie-slim AS builder
+# --- Stage 1: Builder ---
+FROM cgr.dev/chainguard/node:latest AS builder
 
-WORKDIR /app
+# Cria o usuário 'node'
+USER node
 
-# Copy package files
-COPY package*.json ./
+# Define o diretório de trabalho
+WORKDIR /usr/src/app
 
-# Install all dependencies (including dev dependencies for build)
-RUN npm ci --prefer-offline --no-audit --progress=false --loglevel=error
+# Copia os arquivos de dependências
+COPY --chown=node:node package*.json ./
 
-# Copy source code
-COPY . .
+# Instala as dependências
+RUN npm ci --no-audit
 
-# Set DB URL for build (accepts from docker-compose build args)
+COPY --chown=node:node . .
+
+# Define a URL do MongoDB para o build
 ARG MONGODB_URI=
 ENV MONGODB_URI=${MONGODB_URI}
 
-# Build application
-RUN npm run build
+# Executa o comando de build que cria o bundle de produção
+RUN npm run build:prod
 
-# Production stage
-FROM node:lts-trixie-slim
+# Limpa o cache do npm para reduzir o tamanho da imagem
+RUN npm prune --production
 
-WORKDIR /app
+# --- Stage 2: Production ---
+FROM cgr.dev/chainguard/node:latest AS production
 
-# Copy package files and lock file
-COPY package*.json ./
+# Define o diretório de trabalho
+WORKDIR /usr/src/app
 
-# Install production dependencies only
-RUN npm ci --only=production --no-audit && npm cache clean --force
+# Copia os arquivos empacotados da etapa de build para a imagem de produção
+COPY --chown=node:node --from=builder /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=builder /usr/src/app/dist ./dist
 
-# Copy built application from builder
-COPY --from=builder /app/dist ./dist
+# Healthcheck adicionado para verificar se a API está respondendo
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
+  CMD node -e "try { require('http').get('http://localhost:5000/api', (r) => process.exit(r.statusCode === 200 || r.statusCode === 404 ? 0 : 1)) } catch (e) { process.exit(1) }"
 
-# Expose port
-EXPOSE 5000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s \
-  CMD node -e "require('http').get('http://localhost:5000/api', (r) => {process.exit(r.statusCode === 404 ? 0 : 1)})"
-
-# Start application
-CMD ["node", "dist/main"]
+# Start the server using the production build
+CMD [ "dist/main" ]

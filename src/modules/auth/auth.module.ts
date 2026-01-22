@@ -10,7 +10,7 @@ import { User, UserSchema } from './schemas/user.schema';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     JwtModule.register({
       secret: process.env.JWT_SECRET ?? 'your-secret-key-change-in-production',
-      signOptions: { expiresIn: '7d' },
+      signOptions: { expiresIn: '4h' },
     }),
   ],
   controllers: [AuthController],

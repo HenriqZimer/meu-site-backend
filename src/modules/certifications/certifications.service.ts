@@ -9,11 +9,11 @@ export class CertificationsService {
   constructor(@InjectModel(Certification.name) private certificationModel: Model<Certification>) {}
 
   async findAll(): Promise<Certification[]> {
-    return this.certificationModel.find({ active: true }).sort({ order: 1, date: -1 }).exec();
+    return this.certificationModel.find({ active: true }).sort({ date: -1 }).exec();
   }
 
   async findAllForAdmin(): Promise<Certification[]> {
-    return this.certificationModel.find().sort({ order: 1, date: -1 }).exec();
+    return this.certificationModel.find().sort({ date: -1 }).exec();
   }
 
   async findOne(id: string): Promise<Certification> {
@@ -27,7 +27,7 @@ export class CertificationsService {
   async findByIssuer(issuer: string): Promise<Certification[]> {
     return this.certificationModel
       .find({ issuer: { $eq: issuer }, active: true })
-      .sort({ order: 1, date: -1 })
+      .sort({ date: -1 })
       .exec();
   }
 
@@ -38,16 +38,7 @@ export class CertificationsService {
 
   async update(id: string, updateCertificationDto: UpdateCertificationDto): Promise<Certification> {
     // List of allowed fields for update
-    const allowedFields = [
-      'name',
-      'issuer',
-      'image',
-      'link',
-      'date',
-      'skills',
-      'order',
-      'active',
-    ];
+    const allowedFields = ['name', 'issuer', 'image', 'link', 'date', 'skills', 'active'];
     // Sanitize updateCertificationDto: only allow allowedFields
     const safeUpdate: Partial<UpdateCertificationDto> = {};
     for (const key of allowedFields) {

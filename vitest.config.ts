@@ -1,5 +1,5 @@
-import { defineConfig } from 'vitest/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
+import { defineConfig } from 'vitest/config';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [tsconfigPaths()],
@@ -22,9 +22,20 @@ export default defineConfig({
         '**/.eslintrc.js',
         '**/eslint.config.mjs',
         'src/main.ts',
+        'src/app.module.ts',
+        '**/*.module.ts',
+        '**/*.dto.ts',
+        '**/*.schema.ts',
+        '**/*.interface.ts',
+        '**/*.entity.ts',
       ],
       include: ['src/**/*.ts'],
-      excludeNodeModules: true,
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 80,
+        statements: 80,
+      },
     },
   },
-})
+});

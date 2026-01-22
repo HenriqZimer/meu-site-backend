@@ -73,3 +73,6 @@ Thumbs.db
 # Development
 /data
 /scripts
+
+**/*.spec.ts
+**/*.test.ts
