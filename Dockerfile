@@ -1,43 +1,52 @@
-# --- Stage 1: Builder ---
-FROM cgr.dev/chainguard/node:latest AS builder
+# ========================================
+# Stage 1: Build
+# Usa latest-dev pois precisa do npm para build
+# ========================================
+FROM cgr.dev/chainguard/node:latest-dev AS builder
 
-# Cria o usuário 'node'
-USER node
+WORKDIR /app
 
-# Define o diretório de trabalho
-WORKDIR /usr/src/app
-
-# Copia os arquivos de dependências
+# Copia arquivos de dependências
 COPY --chown=node:node package*.json ./
 
-# Instala as dependências
-RUN npm ci --no-audit
+# Instala todas as dependências (necessário para build)
+RUN npm ci --no-audit --no-fund
 
+# Copia código fonte
 COPY --chown=node:node . .
 
-# Define a URL do MongoDB para o build
-ARG MONGODB_URI=
-ENV MONGODB_URI=${MONGODB_URI}
-
-# Executa o comando de build que cria o bundle de produção
+# Build da aplicação NestJS
 RUN npm run build:prod
 
-# Limpa o cache do npm para reduzir o tamanho da imagem
-RUN npm prune --production
+# Remove devDependencies e limpa cache
+RUN npm prune --production --no-audit --no-fund && \
+    npm cache clean --force
 
-# --- Stage 2: Production ---
+# ========================================
+# Stage 2: Production
+# Usa latest (sem npm) - mais leve e sem vulnerabilidades
+# ========================================
 FROM cgr.dev/chainguard/node:latest AS production
 
-# Define o diretório de trabalho
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copia os arquivos empacotados da etapa de build para a imagem de produção
-COPY --chown=node:node --from=builder /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=builder /usr/src/app/dist ./dist
+# Copia node_modules de produção, dist/ e package.json
+COPY --chown=node:node --from=builder /app/node_modules ./node_modules
+COPY --chown=node:node --from=builder /app/dist ./dist
+COPY --chown=node:node --from=builder /app/package*.json ./
 
-# Healthcheck adicionado para verificar se a API está respondendo
-HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
-  CMD node -e "try { require('http').get('http://localhost:5000/api', (r) => process.exit(r.statusCode === 200 || r.statusCode === 404 ? 0 : 1)) } catch (e) { process.exit(1) }"
+# Variáveis de ambiente
+ENV NODE_ENV=production \
+    PORT=5000
 
-# Start the server using the production build
-CMD [ "dist/main" ]
+EXPOSE 5000
+
+# Healthcheck removed temporarily to debug
+# Will be added back once app is confirmed working
+
+# Usuário non-root (já é o padrão na Chainguard)
+USER node
+
+# Inicia a aplicação (ENTRYPOINT já tem /usr/bin/node)
+CMD ["dist/main"]
+

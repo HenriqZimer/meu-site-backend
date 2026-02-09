@@ -41,7 +41,7 @@ export default [
       '@typescript-eslint/interface-name-prefix': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn', // Warn em produção
+      '@typescript-eslint/no-explicit-any': 'off', // Desabilitado - NestJS usa any em error handling e injeção de dependências
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

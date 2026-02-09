@@ -1,78 +1,55 @@
 # Dependencies
 node_modules
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
-# Build outputs
+# Build files
 dist
-build
 .output
-
-# Environment files
-.env
-.env.*
-!.env.example
-
-# Git
-.git
-.gitignore
-.github
+build
+*.log
 
 # Testing
 coverage
 .nyc_output
-cypress
-cypress.config.mjs
-*.spec.ts
 *.test.ts
-vitest.config.ts
+*.spec.ts
+test
+**/__tests__/**
+**/__mocks__/**
 
-# IDE
+# Environment & Config
+.env
+.env.local
+.env.*.local
 .vscode
 .idea
-*.swp
-*.swo
 
-# CI/CD
-Jenkinsfile
-jenkinsPod.yaml
-sonar-project.properties
+# Git & CI/CD
+.git
+.gitignore
 .gitlab-ci.yml
-.travis.yml
+.github
 
 # Documentation
 README.md
 CHANGELOG.md
-LICENSE
 *.md
+docs
 
 # Docker
 Dockerfile
-.dockerignore
+Dockerfile.*
 docker-compose*.yml
+.dockerignore
 
-# Logs
-logs
-*.log
-
-# Cache
-.npm
-.cache
-.eslintcache
-
-# Temp
-/tmp
-/temp
-.temp
-
-# OS
+# Misc
 .DS_Store
 Thumbs.db
-
-# Development
-/data
-/scripts
-
-**/*.spec.ts
-**/*.test.ts
+*.swp
+*.swo
+*~
+.eslintcache
+.cache
