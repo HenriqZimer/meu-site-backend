@@ -13,12 +13,14 @@ A production-ready, enterprise-grade REST API backend for portfolio website buil
 ## ✨ Features
 
 ### 🔐 Security & Authentication
+
 - **JWT Authentication** - Secure token-based authentication
 - **Bcrypt Password Hashing** - Industry-standard password encryption
 - **Admin Panel Access Control** - Protected admin routes
 - **CORS Configuration** - Cross-origin resource sharing control
 
 ### 📊 API Modules
+
 - **Certifications** - Manage professional certifications
 - **Contacts** - Handle contact form submissions
 - **Courses** - Display educational background
@@ -27,6 +29,7 @@ A production-ready, enterprise-grade REST API backend for portfolio website buil
 - **Health Check** - API health monitoring endpoint
 
 ### 🧪 Testing & Quality
+
 - **Vitest** - Fast unit testing with coverage reporting
 - **Cypress** - Comprehensive E2E API testing
 - **ESLint** - Code quality and consistency enforcement
@@ -34,11 +37,13 @@ A production-ready, enterprise-grade REST API backend for portfolio website buil
 - **Security Auditing** - Automated dependency vulnerability scanning
 
 ### 📚 Documentation
+
 - **Swagger/OpenAPI** - Interactive API documentation
 - **TypeScript** - Full type safety and IntelliSense support
 - **Class Validation** - Request/response validation with decorators
 
 ### 🚀 DevOps Ready
+
 - **Docker** - Containerized deployment
 - **Jenkins CI/CD** - Automated build and deployment pipeline
 - **SonarQube** - Code quality analysis
@@ -122,6 +127,7 @@ The API will be available at `http://localhost:5000`
 ### 6. Access API Documentation
 
 Open your browser and navigate to:
+
 - **Swagger UI**: `http://localhost:5000/api`
 
 ## 📁 Project Structure
@@ -173,37 +179,39 @@ meu-site-backend/
 
 ## 🔧 NPM Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run start` | Start the application |
-| `npm run start:dev` | Start in watch mode (hot-reload) |
-| `npm run start:debug` | Start in debug mode |
-| `npm run start:prod` | Start in production mode |
-| `npm run build` | Build the application |
-| `npm run test` | Run unit tests |
-| `npm run test:unit:watch` | Run unit tests in watch mode |
-| `npm run test:unit:ui` | Run tests with Vitest UI |
-| `npm run test:coverage` | Generate coverage report |
-| `npm run test:e2e` | Run E2E tests (starts server) |
-| `npm run test:e2e:quick` | Run quick E2E tests |
-| `npm run test:e2e:headed` | Open Cypress UI |
-| `npm run test:api` | Run API tests only |
-| `npm run lint` | Lint and fix code |
-| `npm run lint:check` | Check linting without fixing |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check formatting |
-| `npm run security` | Run security audit |
-| `npm run seed` | Seed database with initial data |
-| `npm run create:admin` | Create admin user |
+| Command                   | Description                      |
+| ------------------------- | -------------------------------- |
+| `npm run start`           | Start the application            |
+| `npm run start:dev`       | Start in watch mode (hot-reload) |
+| `npm run start:debug`     | Start in debug mode              |
+| `npm run start:prod`      | Start in production mode         |
+| `npm run build`           | Build the application            |
+| `npm run test`            | Run unit tests                   |
+| `npm run test:unit:watch` | Run unit tests in watch mode     |
+| `npm run test:unit:ui`    | Run tests with Vitest UI         |
+| `npm run test:coverage`   | Generate coverage report         |
+| `npm run test:e2e`        | Run E2E tests (starts server)    |
+| `npm run test:e2e:quick`  | Run quick E2E tests              |
+| `npm run test:e2e:headed` | Open Cypress UI                  |
+| `npm run test:api`        | Run API tests only               |
+| `npm run lint`            | Lint and fix code                |
+| `npm run lint:check`      | Check linting without fixing     |
+| `npm run format`          | Format code with Prettier        |
+| `npm run format:check`    | Check formatting                 |
+| `npm run security`        | Run security audit               |
+| `npm run seed`            | Seed database with initial data  |
+| `npm run create:admin`    | Create admin user                |
 
 ## 🌍 API Endpoints
 
 ### Authentication
+
 - `POST /auth/login` - Authenticate user
 - `POST /auth/register` - Register new user (admin only)
 - `GET /auth/profile` - Get authenticated user profile
 
 ### Public Endpoints
+
 - `GET /health` - Health check endpoint
 - `GET /certifications` - List all certifications
 - `GET /courses` - List all courses
@@ -212,6 +220,7 @@ meu-site-backend/
 - `POST /contacts` - Submit contact form
 
 ### Admin Endpoints (Protected)
+
 - `POST /certifications` - Create certification
 - `PUT /certifications/:id` - Update certification
 - `DELETE /certifications/:id` - Delete certification
@@ -222,12 +231,14 @@ Full API documentation available at `/api` when running the server.
 ## 🔐 Security Considerations
 
 ### Authentication & Authorization
+
 - ✅ JWT tokens with expiration
 - ✅ Password hashing with bcrypt
 - ✅ Protected admin routes with guards
 - ✅ Environment-based configuration
 
 ### Best Practices Applied
+
 - ✅ Input validation on all endpoints
 - ✅ CORS configuration for allowed origins
 - ✅ Helmet security headers (can be added)
@@ -237,6 +248,7 @@ Full API documentation available at `/api` when running the server.
 - ✅ Regular security audits with `npm audit`
 
 ### Secrets Management
+
 - ✅ No hardcoded credentials
 - ✅ Environment variables for sensitive data
 - ✅ `.env` files excluded from version control
@@ -269,17 +281,17 @@ services:
   backend:
     build: .
     ports:
-      - "5000:5000"
+      - '5000:5000'
     environment:
       - MONGODB_URI=mongodb://mongo:27017/portfolio
       - JWT_SECRET=${JWT_SECRET}
     depends_on:
       - mongo
-  
+
   mongo:
     image: mongo:8
     ports:
-      - "27017:27017"
+      - '27017:27017'
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=password
@@ -291,6 +303,7 @@ volumes:
 ```
 
 Run with:
+
 ```bash
 docker-compose up -d
 ```
@@ -332,6 +345,7 @@ npm run test:api
 ### Coverage Reports
 
 Coverage reports are generated in the `coverage/` directory and include:
+
 - Line coverage
 - Branch coverage
 - Function coverage
@@ -342,6 +356,7 @@ Coverage reports are generated in the `coverage/` directory and include:
 ### Adding New Modules
 
 1. Generate module using NestJS CLI:
+
 ```bash
 nest generate resource my-module
 ```
@@ -349,6 +364,7 @@ nest generate resource my-module
 2. Choose REST API and generate CRUD endpoints
 
 3. Add schema in `schemas/` directory:
+
 ```typescript
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
@@ -365,6 +381,7 @@ export const MyEntitySchema = SchemaFactory.createForClass(MyEntity);
 4. Implement service, controller, and DTOs
 
 5. Add tests:
+
 ```bash
 # Unit tests
 touch src/modules/my-module/my-module.service.spec.ts
