@@ -120,11 +120,10 @@ export class ProjectsService {
           sanitizedUpdate[key] = value;
         }
       }
-    // Final defensive validation: ensure no MongoDB operator keys are present
-    if (!this.isSafeUpdateObject(sanitizedUpdate)) {
-      throw new NotFoundException('Invalid update payload'); // or BadRequestException if imported
-    }
-
+      // Final defensive validation: ensure no MongoDB operator keys are present
+      if (!this.isSafeUpdateObject(sanitizedUpdate)) {
+        throw new NotFoundException('Invalid update payload'); // or BadRequestException if imported
+      }
     }
 
     const project = await this.projectModel
