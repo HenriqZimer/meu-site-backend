@@ -12,7 +12,7 @@ export class Skill extends Document {
   @Prop({ type: String, required: true })
   icon: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false, default: '#3B82F6' })
   color: string;
 
   @Prop({ type: Boolean, default: true })

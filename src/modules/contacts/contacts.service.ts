@@ -1,16 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Contact } from './schemas/contact.schema';
 import { CreateContactDto } from './dto/contact.dto';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class ContactsService {
-  constructor(@InjectModel(Contact.name) private contactModel: Model<Contact>) {}
+  private readonly logger = new Logger(ContactsService.name);
+
+  constructor(
+    @InjectModel(Contact.name) private contactModel: Model<Contact>,
+    private emailService: EmailService,
+  ) {}
 
   async create(createContactDto: CreateContactDto): Promise<Contact> {
     const contact = new this.contactModel(createContactDto);
-    return contact.save();
+    const savedContact = await contact.save();
+
+    // Envia notificação por email de forma assíncrona (não bloqueia a resposta)
+    this.emailService
+      .sendContactNotification({
+        name: savedContact.name,
+        email: savedContact.email,
+        subject: savedContact.subject,
+        message: savedContact.message,
+        createdAt: savedContact.createdAt,
+      })
+      .catch((error) => {
+        this.logger.error('Failed to send email notification:', error);
+      });
+
+    return savedContact;
   }
 
   async findAll(): Promise<Contact[]> {

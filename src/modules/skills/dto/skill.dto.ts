@@ -14,9 +14,10 @@ export class CreateSkillDto {
   @IsString()
   icon: string;
 
-  @ApiProperty({ example: '#326CE5' })
+  @ApiProperty({ example: '#326CE5', required: false })
+  @IsOptional()
   @IsString()
-  color: string;
+  color?: string;
 
   @ApiProperty({ example: true, required: false })
   @IsOptional()

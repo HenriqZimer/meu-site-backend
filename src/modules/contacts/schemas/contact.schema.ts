@@ -20,6 +20,10 @@ export class Contact extends Document {
 
   @Prop({ type: Date })
   readAt?: Date;
+
+  // Timestamps automáticos do Mongoose
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const ContactSchema = SchemaFactory.createForClass(Contact);
