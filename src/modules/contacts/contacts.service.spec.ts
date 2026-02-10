@@ -4,6 +4,7 @@ import { ContactsService } from './contacts.service';
 describe('ContactsService', () => {
   let service: ContactsService;
   let mockContactModel: any;
+  let mockEmailService: any;
 
   beforeEach(() => {
     const mockExec = vi.fn();
@@ -23,7 +24,12 @@ describe('ContactsService', () => {
     mockContactModel.findByIdAndUpdate = mockFindByIdAndUpdate;
     mockContactModel.findByIdAndDelete = mockFindByIdAndDelete;
 
-    service = new ContactsService(mockContactModel);
+    // Mock EmailService
+    mockEmailService = {
+      sendContactNotification: vi.fn().mockResolvedValue(undefined),
+    };
+
+    service = new ContactsService(mockContactModel, mockEmailService);
   });
 
   describe('create', () => {

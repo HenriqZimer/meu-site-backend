@@ -127,7 +127,7 @@ export class ProjectsService {
     }
 
     const project = await this.projectModel
-      .findByIdAndUpdate(id, { $set: sanitizedUpdate }, { new: true })
+      .findByIdAndUpdate(id, sanitizedUpdate, { new: true })
       .exec();
 
     if (!project) {
