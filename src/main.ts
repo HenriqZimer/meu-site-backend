@@ -129,7 +129,7 @@ async function bootstrap() {
   logger.log(`🚀 Application is running on: http://localhost:${port}`);
   logger.log(`📚 Swagger docs available at: http://localhost:${port}/api/docs`);
   logger.log(`🔒 Security: Helmet enabled, CORS configured`);
-  logger.log(`🛡️  Authentication: JWT Guard enabled globally`);
+  logger.log(`🛡️ Authentication: JWT Guard enabled globally`);
   logger.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   logger.log('');
   logger.log('============================================================');
