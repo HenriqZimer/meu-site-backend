@@ -63,7 +63,7 @@ spec:
           mountPath: /kaniko/.docker
         - name: jenkins-artifacts
           mountPath: /artifacts
-    - name: alpine-harbor-scanner
+    - name: alpine
       image: alpine
       command:
         - sleep
